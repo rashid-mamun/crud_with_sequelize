@@ -41,11 +41,5 @@ module.exports = (sequelize, Model, DataTypes) => {
       timestamps: false,
     }
   );
-
-  // Profile.hasOne(Auth, {
-  //   foreignKey: {
-  //     name: 'profileId'
-  //   }
-  //   });
   return Profile;
 };

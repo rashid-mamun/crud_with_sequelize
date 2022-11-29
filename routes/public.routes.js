@@ -6,4 +6,5 @@ router.get('/', (req, res) => {
 });
 
 router.post('/register', config.register);
+router.post('/login', config.login);
 module.exports = router;

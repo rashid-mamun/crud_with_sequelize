@@ -12,8 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 /* connection with db and create database table */
-db.sequelize.sync({ force: true });
-// db.sequelize.drop();
+db.sequelize.sync();
+//  db.sequelize.drop();
 
 /* application routes */
 app.use('', publicRouter);
