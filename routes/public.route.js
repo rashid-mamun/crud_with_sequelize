@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const config = require('../controller/public.controller');
+const apiRoutes = require('../controller/public.controller');
 router.get('/', (req, res) => {
   res.status(200).json('Hello');
 });
 
-router.post('/register', config.register);
-router.post('/login', config.login);
+router.post('/register', apiRoutes.register);
+router.post('/login', apiRoutes.login);
 module.exports = router;

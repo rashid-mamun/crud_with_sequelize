@@ -29,15 +29,16 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-const Profile = require('../models/profile')(sequelize, Model, DataTypes);
-const Auth = require('../models/auth')(sequelize, Model, DataTypes);
+const Profile = require('../models/profile.model')(sequelize, Model, DataTypes);
+const Auth = require('../models/auth.model')(sequelize, Model, DataTypes);
 
 // db.sequelize.sync();
-Profile.hasOne(Auth, );
+Profile.hasOne(Auth);
 Auth.belongsTo(Profile, {
   foreignKey: 'id',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
 });
-
 
 db.Profile = Profile;
 db.Auth = Auth;

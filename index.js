@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const db = require('./config/sequelize');
-const publicRouter = require('./routes/public.routes');
+const publicRoute = require('./routes/public.route');
+const userRoute = require('./routes/user.route');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -16,7 +17,8 @@ db.sequelize.sync();
 //  db.sequelize.drop();
 
 /* application routes */
-app.use('', publicRouter);
+app.use('', publicRoute);
+app.use('/users', userRoute);
 app.listen(port, () => {
   console.log('listening from port', port);
 });
