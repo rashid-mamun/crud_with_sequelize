@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const db = require('./config/sequelize');
+const publicRouter = require('./routes/public.routes');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -10,15 +11,12 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-/* 
-application routes
-*/
-app.get('/', (req, res) => {
-  res.status(200).json('Hello');
-});
-
+/* connection with db and create database table */
 db.sequelize.sync({ force: true });
 // db.sequelize.drop();
+
+/* application routes */
+app.use('', publicRouter);
 app.listen(port, () => {
   console.log('listening from port', port);
 });

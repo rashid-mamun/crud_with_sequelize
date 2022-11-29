@@ -32,8 +32,13 @@ db.sequelize = sequelize;
 const Profile = require('../models/profile')(sequelize, Model, DataTypes);
 const Auth = require('../models/auth')(sequelize, Model, DataTypes);
 
-Profile.hasOne(Auth);
-Auth.belongsTo(Profile);
+// db.sequelize.sync();
+Profile.hasOne(Auth, {
+  foreignKey: 'id',
+});
+Auth.belongsTo(Profile, {
+  foreignKey: 'id',
+});
 
 db.Profile = Profile;
 db.Auth = Auth;

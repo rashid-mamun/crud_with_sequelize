@@ -1,10 +1,13 @@
+
+
 module.exports = (sequelize, Model, DataTypes) => {
   class Profile extends Model {}
 
   Profile.init(
     {
       id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
       firstName: {
@@ -22,7 +25,10 @@ module.exports = (sequelize, Model, DataTypes) => {
       profilePhoto: {
         type: DataTypes.STRING,
       },
-
+      isMarried: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
       age: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -30,11 +36,16 @@ module.exports = (sequelize, Model, DataTypes) => {
     },
     {
       // Other model options go here
-      sequelize, 
-      modelName: 'profile', 
+      sequelize,
+      modelName: 'profile',
       timestamps: false,
     }
   );
 
+  // Profile.hasOne(Auth, {
+  //   foreignKey: {
+  //     name: 'profileId'
+  //   }
+  //   });
   return Profile;
 };

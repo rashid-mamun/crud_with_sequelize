@@ -19,7 +19,10 @@ module.exports = (sequelize, Model, DataTypes) => {
       sequelize, 
       modelName: 'auth', 
       timestamps: false,
-    }
+    },
+
+  
   );
+  
   return Auth;
 };
