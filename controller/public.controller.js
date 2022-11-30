@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../config/sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const registerSchemaValidator = require('../validator/register.validator');
 require('dotenv').config();
 
 exports.register = async (req, res) => {
@@ -20,6 +21,8 @@ exports.register = async (req, res) => {
   };
   const t = await db.sequelize.transaction();
   try {
+    const valid = await registerSchemaValidator.validateAsync(req.body);
+    
     const profile = await db.Profile.create(profileData, { transaction: t });
     let auth;
     if (profile && profile.id) {
