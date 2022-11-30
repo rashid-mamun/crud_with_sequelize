@@ -18,21 +18,22 @@ exports.register = async (req, res) => {
     isMarried: req.body.isMarried,
     age: req.body.age,
   };
-
+  const t = await db.sequelize.transaction();
   try {
-    const profile = await db.Profile.create(profileData);
+    const profile = await db.Profile.create(profileData, { transaction: t });
     let auth;
     if (profile && profile.id) {
       authData.profileId = profile.id;
-      auth = await db.Auth.create(authData);
+      auth = await db.Auth.create(authData, { transaction: t });
     }
-
+    await t.commit();
     return res.status(201).json({
       message: 'Record created successfully!',
       response: { profile, auth },
     });
   } catch (error) {
     console.log(error);
+    await t.rollback();
     return res.status(500).json({
       message: 'Unable to create a record!',
     });
@@ -42,7 +43,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const user = await db.Auth.findOne({
-      attributes: ['id',  'email','password'],
+      attributes: ['id', 'email', 'password'],
       where: {
         email: req.body.email,
       },
