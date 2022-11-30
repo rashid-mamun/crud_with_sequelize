@@ -52,6 +52,45 @@ exports.updateOneUser = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+exports.updateOneUserPassword = async (req, res) => {
+  try {
+    if (req.userId != req.params.id) {
+      throw 'user is not valid';
+    }
+   
+    const user = await db.Auth.findOne({
+      attributes: ['id', 'email', 'password'],
+      where: {
+        email: req.body.email,
+      },
+    });
+    const newHashedPassword = await bcrypt.hash(req.body.password, 10);
+    if (user) {
+      const isValidPassword = await bcrypt.compare(
+        req.body.password,
+        user.dataValues.password
+      );
+
+      if (isValidPassword) {
+        const authData = {
+          email: req.body.email,
+          password: newHashedPassword,
+        };
+        const result = await db.Auth.update(authData, {
+          where: {
+            email: req.body.email,
+          },
+        });
+        res.status(200).json({
+          message: 'password updated  successful!',
+        });
+      }
+    }
+  } catch (e) {
+    console.log('error deleting user:', e);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 exports.deleteOneUser = async (req, res) => {
   try {
     if (req.userId != req.params.id) {
