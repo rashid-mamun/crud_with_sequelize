@@ -7,6 +7,7 @@ const checkLogin = (req, res, next) => {
     const { firstName, userId } = decoded;
     req.firstName = firstName;
     req.userId = userId;
+    console.log(userId);
     next();
   } catch {
     next('Authentication  failure');

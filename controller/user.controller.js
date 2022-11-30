@@ -7,6 +7,9 @@ require('dotenv').config();
 
 exports.getOneUser = async (req, res) => {
   try {
+    if (req.userId != req.params.id) {
+      throw 'user is not valid';
+    }
     const result = await db.Profile.findOne({
       where: {
         id: req.params.id,
@@ -25,13 +28,38 @@ exports.getOneUser = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-exports.updateOneUser = (req, res) => {};
+exports.updateOneUser = async (req, res) => {
+  const profileData = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    nid: req.body.nid,
+    profilePhoto: req.body.profilePhoto,
+    isMarried: req.body.isMarried,
+    age: req.body.age,
+  };
+  try {
+    if (req.userId != req.params.id) {
+      throw 'user is not valid';
+    }
+    const result = await db.Profile.update(profileData, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    return res.json(result);
+  } catch (e) {
+    console.log('error deleting user:', e);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 exports.deleteOneUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    if (req.userId != req.params.id) {
+      throw 'user is not valid';
+    }
     const result = await db.Profile.destroy({
       where: {
-        id: userId,
+        id: req.params.id,
       },
       include: [
         {
@@ -42,7 +70,7 @@ exports.deleteOneUser = async (req, res) => {
     });
     return res.json(result);
   } catch (e) {
-    console.log('error deleting user:', e);
+    // console.log('error deleting user:', e);
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
