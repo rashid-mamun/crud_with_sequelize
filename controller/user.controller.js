@@ -113,6 +113,28 @@ exports.deleteOneUser = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+exports.updateOneUserPicture = async (req, res) => {
+  const profileData = {
+   
+    profilePhoto: req.file.filename,
+    
+  };
+  try {
+    if (req.userId != req.params.id) {
+      throw 'user is not valid';
+    }
+    const result = await db.Profile.update(profileData, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    return res.json(result);
+  } catch (e) {
+    console.log('error updated user:', e);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 exports.getAllUser = async (req, res) => {
   try {
     const result = await db.Profile.findAll({
