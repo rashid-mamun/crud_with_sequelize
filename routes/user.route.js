@@ -8,8 +8,8 @@ const upload = require('../validator/image.validator');
 router.get('', apiRoutes.getAllUser);
 router.get('/:id', checklogin, apiRoutes.getOneUser);
 router.put('/:id', checklogin, apiRoutes.updateOneUser);
+router.delete('/:id', checklogin, apiRoutes.deleteOneUser);
 router.put('/change-password/:id', checklogin, apiRoutes.updateOneUserPassword);
-router.delete('/image/:id', checklogin, apiRoutes.deleteOneUser);
 
 router.post(
   '/image/:id',
